@@ -32,8 +32,13 @@ export default function TabLayout() {
           tabBarStyle: Platform.select({
             ios: {
               position: "absolute",
+              //   height: 80,
+              backgroundColor: Colors[colorScheme ?? "light"].navbar,
             },
-            default: {},
+            default: {
+              //   height: 80,
+              backgroundColor: Colors[colorScheme ?? "light"].navbar,
+            },
           }),
         }}
       >
@@ -47,20 +52,20 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="recipes"
-          options={{
-            title: "Recettes",
-            tabBarIcon: ({ color }) => (
-              <IconSymbol size={iconSize} name="recipe" color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
           name="list"
           options={{
             title: "Liste de course",
             tabBarIcon: ({ color }) => (
               <IconSymbol size={iconSize} name="shoppingList" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="recipes"
+          options={{
+            title: "Recettes",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={iconSize} name="recipe" color={color} />
             ),
           }}
         />
@@ -126,6 +131,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 2,
     borderColor: Colors.light.tint,
+    backgroundColor: Colors.light.text,
     justifyContent: "center",
     alignItems: "center",
   },
