@@ -35,5 +35,5 @@ export function IconSymbol({ name, size = 24, color, style }: IconSymbolProps) {
     return null;
   }
 
-  return <SvgIcon width={size} height={size} fill={color} style={style} />;
+  return <SvgIcon width={size} height={size} style={style} />;
 }

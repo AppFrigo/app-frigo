@@ -12,14 +12,20 @@ import {
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import TabBarBackground from "@/components/ui/TabBarBackground";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
+
+const iconSize = 30;
 
 export default function TabLayout() {
+  const colorScheme = useColorScheme();
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <>
       <Tabs
         screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           headerShown: false,
           tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
@@ -36,16 +42,7 @@ export default function TabLayout() {
           options={{
             title: "Frigo",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="fridge" color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name="calendar"
-          options={{
-            title: "Calendrier",
-            tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="calendar" color={color} />
+              <IconSymbol size={iconSize} name="fridge" color={color} />
             ),
           }}
         />
@@ -54,7 +51,7 @@ export default function TabLayout() {
           options={{
             title: "Recettes",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="recipe" color={color} />
+              <IconSymbol size={iconSize} name="recipe" color={color} />
             ),
           }}
         />
@@ -63,7 +60,16 @@ export default function TabLayout() {
           options={{
             title: "Liste de course",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="shoppingList" color={color} />
+              <IconSymbol size={iconSize} name="shoppingList" color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="calendar"
+          options={{
+            title: "Calendrier",
+            tabBarIcon: ({ color }) => (
+              <IconSymbol size={iconSize} name="calendar" color={color} />
             ),
           }}
         />
@@ -75,7 +81,7 @@ export default function TabLayout() {
           onPress={() => setModalVisible(true)}
           style={styles.addButton}
         >
-          <Text style={{ fontSize: 30, color: "white" }}>+</Text>
+          <Text style={{ fontSize: 30, color: Colors.light.tint }}>+</Text>
         </TouchableOpacity>
       </View>
 
@@ -118,13 +124,10 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "grey", // Orange
+    borderWidth: 2,
+    borderColor: Colors.light.tint,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 5,
   },
   addPopupContainer: {
     flex: 1,
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
   addClosePopupButton: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: "#FF5722",
+    backgroundColor: Colors.light.tint,
     borderRadius: 5,
   },
 });
