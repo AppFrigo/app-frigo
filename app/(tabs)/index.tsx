@@ -1,4 +1,6 @@
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { Text, View, StyleSheet } from "react-native";
+import FridgeIcon from "@/assets/icons/fridge.svg";
 
 export default function Index() {
   return (

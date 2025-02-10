@@ -1,43 +1,39 @@
-// This file is a fallback for using MaterialIcons on Android and web.
+import React from "react";
+import { OpaqueColorValue, StyleProp, ViewStyle } from "react-native";
 
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { SymbolWeight } from 'expo-symbols';
-import React from 'react';
-import { OpaqueColorValue, StyleProp, ViewStyle } from 'react-native';
+// Import des icônes SVG locales
+import CalendarIcon from "@/assets/icons/calendar.svg";
+import FridgeIcon from "@/assets/icons/fridge.svg";
+import RecipeIcon from "@/assets/icons/recipe.svg";
+import ShoppingListIcon from "@/assets/icons/shopping-list.svg";
 
-// Add your SFSymbol to MaterialIcons mappings here.
-const MAPPING = {
-  // See MaterialIcons here: https://icons.expo.fyi
-  // See SF Symbols in the SF Symbols app on Mac.
-  'house.fill': 'home',
-  'paperplane.fill': 'send',
-  'chevron.left.forwardslash.chevron.right': 'code',
-  'chevron.right': 'chevron-right',
-} as Partial<
-  Record<
-    import('expo-symbols').SymbolViewProps['name'],
-    React.ComponentProps<typeof MaterialIcons>['name']
-  >
->;
+// Mapping des icônes avec les fichiers SVG
+const ICON_MAPPING = {
+  calendar: CalendarIcon,
+  fridge: FridgeIcon,
+  recipe: RecipeIcon,
+  shoppingList: ShoppingListIcon,
+} as const;
 
-export type IconSymbolName = keyof typeof MAPPING;
+export type IconSymbolName = keyof typeof ICON_MAPPING;
 
-/**
- * An icon component that uses native SFSymbols on iOS, and MaterialIcons on Android and web. This ensures a consistent look across platforms, and optimal resource usage.
- *
- * Icon `name`s are based on SFSymbols and require manual mapping to MaterialIcons.
- */
-export function IconSymbol({
-  name,
-  size = 24,
-  color,
-  style,
-}: {
+interface IconSymbolProps {
   name: IconSymbolName;
   size?: number;
-  color: string | OpaqueColorValue;
+  color?: string | OpaqueColorValue;
   style?: StyleProp<ViewStyle>;
-  weight?: SymbolWeight;
-}) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+}
+
+/**
+ * Composant d'icône basé sur des SVG locaux.
+ */
+export function IconSymbol({ name, size = 24, color, style }: IconSymbolProps) {
+  const SvgIcon = ICON_MAPPING[name];
+
+  if (!SvgIcon) {
+    console.error(`❌ Icon "${name}" not found in ICON_MAPPING.`);
+    return null;
+  }
+
+  return <SvgIcon width={size} height={size} fill={color} style={style} />;
 }
