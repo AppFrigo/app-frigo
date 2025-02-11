@@ -4,9 +4,10 @@ import {
   Platform,
   View,
   TouchableOpacity,
-  Modal,
   Text,
   StyleSheet,
+  Animated,
+  Dimensions,
 } from "react-native";
 
 import { HapticTab } from "@/components/HapticTab";
@@ -15,11 +16,30 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
+const screenHeight = Dimensions.get("window").height;
 const iconSize = 30;
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const [modalVisible, setModalVisible] = useState(false);
+  const translateY = React.useRef(new Animated.Value(screenHeight)).current;
+
+  const openModal = () => {
+    setModalVisible(true);
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeModal = () => {
+    Animated.timing(translateY, {
+      toValue: screenHeight,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setModalVisible(false));
+  };
 
   return (
     <>
@@ -32,11 +52,9 @@ export default function TabLayout() {
           tabBarStyle: Platform.select({
             ios: {
               position: "absolute",
-              //   height: 80,
               backgroundColor: Colors[colorScheme ?? "light"].navbar,
             },
             default: {
-              //   height: 80,
               backgroundColor: Colors[colorScheme ?? "light"].navbar,
             },
           }),
@@ -81,38 +99,35 @@ export default function TabLayout() {
       </Tabs>
 
       {/* Central button */}
-      <View style={styles.addButtonContainer}>
-        <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={styles.addButton}
-        >
-          <Text style={{ fontSize: 30, color: Colors.light.tint }}>+</Text>
-        </TouchableOpacity>
-      </View>
+      {!modalVisible && (
+        <View style={styles.addButtonContainer}>
+          <TouchableOpacity onPress={openModal} style={styles.addButton}>
+            <Text style={{ fontSize: 30, color: Colors.light.tint }}>+</Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Modal for popup */}
-      <Modal
-        transparent={true}
-        animationType="slide"
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.addPopupContainer}>
-          <View style={styles.addPopupContainerText}>
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-              Ajouter un élément
-            </Text>
-            <Text style={{ marginTop: 10 }}>Que veux-tu ajouter ?</Text>
+      {modalVisible && (
+        <View style={styles.modalBackground}>
+          {/* Animated sliding modal */}
+          <Animated.View
+            style={[
+              styles.modal,
+              {
+                transform: [{ translateY }],
+              },
+            ]}
+          >
+            <Text style={styles.modalTitle}>Ajouter un élément</Text>
+            <Text style={styles.modalText}>Que veux-tu ajouter ?</Text>
 
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              style={styles.addClosePopupButton}
-            >
-              <Text style={{ color: "white" }}>Fermer</Text>
+            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Fermer</Text>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         </View>
-      </Modal>
+      )}
     </>
   );
 }
@@ -120,9 +135,9 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   addButtonContainer: {
     position: "absolute",
-    bottom: 20, // Adjust to the navbar height
+    bottom: 20,
     left: "50%",
-    transform: [{ translateX: -30 }], // Center the button
+    transform: [{ translateX: -30 }],
     zIndex: 10,
   },
   addButton: {
@@ -135,23 +150,38 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  addPopupContainer: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    alignItems: "center",
+  modalBackground: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.5)", // Fixed semi-transparent background
+    justifyContent: "flex-end",
   },
-  addPopupContainerText: {
-    width: 300,
+  modal: {
     backgroundColor: "white",
     padding: 20,
-    borderRadius: 10,
+    borderTopLeftRadius: 25, // Rounded corners for the modal
+    borderTopRightRadius: 25,
+    width: "100%",
     alignItems: "center",
+    elevation: 5, // Shadow for Android
+    shadowColor: "#000", // Shadow for iOS
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
   },
-  addClosePopupButton: {
-    marginTop: 20,
-    padding: 10,
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalText: {
+    marginBottom: 20,
+  },
+  closeButton: {
     backgroundColor: Colors.light.tint,
+    padding: 10,
     borderRadius: 5,
+  },
+  closeButtonText: {
+    color: "white",
+    fontWeight: "bold",
   },
 });
