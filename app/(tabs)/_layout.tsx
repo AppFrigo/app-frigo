@@ -102,7 +102,7 @@ export default function TabLayout() {
       {!modalVisible && (
         <View style={styles.addButtonContainer}>
           <TouchableOpacity onPress={openModal} style={styles.addButton}>
-            <Text style={{ fontSize: 30, color: Colors.light.tint }}>+</Text>
+            <Text style={styles.addButtonTextIcon}>+</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -144,11 +144,19 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    borderWidth: 2,
+    borderWidth: 4,
     borderColor: Colors.light.tint,
     backgroundColor: Colors.light.text,
     justifyContent: "center",
     alignItems: "center",
+  },
+  addButtonTextIcon: {
+    fontSize: 36,
+    color: Colors.light.tint,
+    position: "relative",
+    bottom: 2,
+    left: 1,
+    fontWeight: "500",
   },
   modalBackground: {
     ...StyleSheet.absoluteFillObject,
