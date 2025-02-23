@@ -49,15 +49,17 @@ export default function TabLayout() {
           headerShown: false,
           tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
-          tabBarStyle: Platform.select({
-            ios: {
-              position: "absolute",
+          tabBarStyle: [
+            {
               backgroundColor: Colors[colorScheme ?? "light"].navbar,
             },
-            default: {
-              backgroundColor: Colors[colorScheme ?? "light"].navbar,
-            },
-          }),
+            Platform.select({
+              ios: {
+                position: "absolute",
+              },
+              default: {},
+            }),
+          ],
         }}
       >
         <Tabs.Screen
