@@ -34,13 +34,12 @@ export default function AddButton() {
 
   return (
     <>
-      {!modalVisible ? (
-        <View style={styles.addButtonContainer}>
-          <TouchableOpacity onPress={openModal} style={styles.addButton}>
-            <Text style={styles.addButtonTextIcon}>+</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
+      <View style={styles.addButtonContainer}>
+        <TouchableOpacity onPress={openModal} style={styles.addButton}>
+          <Text style={styles.addButtonTextIcon}>+</Text>
+        </TouchableOpacity>
+      </View>
+      {modalVisible && (
         <View style={styles.modalBackground}>
           {/* Animated sliding modal */}
           <Animated.View
@@ -86,14 +85,15 @@ const styles = StyleSheet.create({
     fontSize: 36,
     color: Colors.light.tint,
     position: "relative",
-    bottom: 2,
-    left: 1,
+    bottom: 3,
+    left: 0.5,
     fontWeight: "500",
   },
   modalBackground: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0,0,0,0.5)", // Fixed semi-transparent background
     justifyContent: "flex-end",
+    zIndex: 15,
   },
   modal: {
     backgroundColor: "white",
