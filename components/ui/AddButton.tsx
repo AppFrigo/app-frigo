@@ -50,12 +50,25 @@ export default function AddButton() {
               },
             ]}
           >
+            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>x</Text>
+            </TouchableOpacity>
             <Text style={styles.modalTitle}>Ajouter un élément</Text>
             <Text style={styles.modalText}>Que veux-tu ajouter ?</Text>
 
-            <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={closeModal} style={styles.button}>
+                <Text style={styles.buttonText}>Ingrédients</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={closeModal} style={styles.button}>
+                <Text style={styles.buttonText}>Recettes</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>Fermer</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </Animated.View>
         </View>
       )}
@@ -116,12 +129,31 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   closeButton: {
-    backgroundColor: Colors.light.tint,
+    position: "absolute",
+    left: 20,
+    top: 5,
     padding: 10,
-    borderRadius: 5,
   },
   closeButtonText: {
-    color: "white",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    backgroundColor: Colors.light.green,
+    width: "40%",
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: Colors.light.text,
+    textAlign: "center",
     fontWeight: "bold",
   },
 });
