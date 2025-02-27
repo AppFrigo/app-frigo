@@ -18,7 +18,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import AddButton from "@/components/ui/AddButton";
 
 const screenHeight = Dimensions.get("window").height;
-const iconSize = 30;
+const iconSize = 50;
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
