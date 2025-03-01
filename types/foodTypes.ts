@@ -1,4 +1,4 @@
-// Enum pour les catégories d'aliments
+// Enum for food categories
 export enum FoodCategory {
   Proteins = "Proteins",
   Fruits = "Fruits",
@@ -10,7 +10,7 @@ export enum FoodCategory {
   Spices = "Spices",
 }
 
-// Interface pour les propriétés de l'aliment
+// Interface for the properties of the food
 export interface IFoodItem {
   id: string;
   name: string;
@@ -19,10 +19,10 @@ export interface IFoodItem {
   expirationDate?: Date;
   quantity: number;
   unit: string; // ex: "kg", "litres", "pcs"
-  notes?: string; // Optionnel
+  notes?: string; // Optionnal
 }
 
-// Classe pour un aliment
+// Class for a food
 export class FoodItem implements IFoodItem {
   constructor(
     public id: string,
