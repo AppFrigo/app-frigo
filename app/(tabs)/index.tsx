@@ -1,131 +1,8 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import { dataTest } from "./testData";
 
-import { IFoodItem, FoodCategory } from "@/types/foodTypes";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-
-const data: IFoodItem[] = [
-  {
-    id: "1",
-    name: "Pomme",
-    category: FoodCategory.Fruits,
-    isDry: false,
-    quantity: 1,
-    unit: "pcs",
-    expirationDate: new Date(),
-  },
-  {
-    id: "2",
-    name: "Poire",
-    category: FoodCategory.Fruits,
-    isDry: false,
-    quantity: 2,
-    unit: "pcs",
-    expirationDate: new Date(),
-  },
-  {
-    id: "3",
-    name: "Pâtes",
-    category: FoodCategory.Cereals,
-    isDry: true,
-    quantity: 1,
-    unit: "kg",
-    expirationDate: new Date(),
-  },
-  {
-    id: "4",
-    name: "Raw Beef",
-    category: FoodCategory.Proteins,
-    isDry: false,
-    quantity: 500,
-    unit: "g",
-    expirationDate: new Date(),
-  },
-  {
-    id: "5",
-    name: "Cheese",
-    category: FoodCategory.Dairy,
-    isDry: false,
-    quantity: 350,
-    unit: "g",
-    expirationDate: new Date(),
-  },
-  {
-    id: "6",
-    name: "Cheese",
-    category: FoodCategory.Dairy,
-    isDry: false,
-    quantity: 350,
-    unit: "g",
-    expirationDate: new Date(),
-  },
-  {
-    id: "7",
-    name: "Cheese",
-    category: FoodCategory.Dairy,
-    isDry: false,
-    quantity: 350,
-    unit: "g",
-    expirationDate: new Date(),
-  },
-  {
-    id: "8",
-    name: "Cheese",
-    category: FoodCategory.Dairy,
-    isDry: false,
-    quantity: 350,
-    unit: "g",
-    expirationDate: new Date(),
-  },
-  {
-    id: "9",
-    name: "Cheese",
-    category: FoodCategory.Dairy,
-    isDry: false,
-    quantity: 350,
-    unit: "g",
-    expirationDate: new Date(),
-  },
-  {
-    id: "12",
-    name: "Pomme",
-    category: FoodCategory.Fruits,
-    isDry: false,
-    quantity: 1,
-    unit: "pcs",
-    expirationDate: new Date(),
-  },
-  {
-    id: "21",
-    name: "Poire",
-    category: FoodCategory.Fruits,
-    isDry: false,
-    quantity: 2,
-    unit: "pcs",
-    expirationDate: new Date(),
-  },
-  {
-    id: "32",
-    name: "Pâtes",
-    category: FoodCategory.Cereals,
-    isDry: true,
-    quantity: 1,
-    unit: "kg",
-    expirationDate: new Date(),
-  },
-  {
-    id: "43",
-    name: "Raw Beef",
-    category: FoodCategory.Proteins,
-    isDry: false,
-    quantity: 500,
-    unit: "g",
-    expirationDate: new Date(),
-  },
-];
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const groupDataInPairs = (data: any) => {
   const pairedData = [];
@@ -136,8 +13,7 @@ const groupDataInPairs = (data: any) => {
 };
 
 const Index = () => {
-  const groupedData = groupDataInPairs(data);
-  const inset = useSafeAreaInsets();
+  const groupedData = groupDataInPairs(dataTest);
 
   return (
     <SafeAreaView style={styles.container}>
