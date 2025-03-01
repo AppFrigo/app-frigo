@@ -1,24 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import { dataTest } from "./testData";
 
 import { SafeAreaView } from "react-native-safe-area-context";
+import FoodService from "@/services/foodService";
+import { IFoodItem } from "@/types/foodTypes";
 
-const groupDataInPairs = (data: any) => {
-  const pairedData = [];
-  for (let i = 0; i < data.length; i += 2) {
-    pairedData.push([data[i], data[i + 1] ? data[i + 1] : null]); // If the element is alone, add `null`
+const groupDataInPairs = (
+  data: IFoodItem[]
+): Array<[IFoodItem, IFoodItem | null]> => {
+  return data.reduce<Array<[IFoodItem, IFoodItem | null]>>(
+    (acc, _, index, arr) => {
+      if (index % 2 === 0) {
+        acc.push([arr[index], arr[index + 1] ?? null]); // Pair elements or set null
+      }
+      return acc;
+    },
+    []
+  );
+};
+
+const fetchAllFoods = async () => {
+  try {
+    const response = await FoodService.getAllFoods();
+    console.log("response", response);
+
+    return response ?? [];
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return [];
   }
-  return pairedData;
 };
 
 const Index = () => {
-  const groupedData = groupDataInPairs(dataTest);
+  const [allFoods, setAllFoods] = useState<IFoodItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchAllFoods();
+      setAllFoods(data);
+    };
+    fetchData();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={groupedData}
+        data={groupDataInPairs(allFoods)}
         renderItem={({ item }) => (
           <View style={styles.rowContainer}>
             {/* First Element */}
