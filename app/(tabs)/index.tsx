@@ -47,7 +47,7 @@ const Index = () => {
 
     // Listen for new food items via WebSocket
     socket.on("foodAdded", (newFood: IFoodItem) => {
-      console.log("New food added:", newFood);
+      console.log("New food added:", newFood.name);
       setAllFoods((prevFoods) => [newFood, ...prevFoods]); // Add new item to the list
     });
 
