@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import { io } from "socket.io-client";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import FoodService from "@/services/foodService";
 import { IFoodItem } from "@/types/foodTypes";
+
+const socket = io("http://localhost:3000");
 
 const groupDataInPairs = (
   data: IFoodItem[]
@@ -35,11 +38,22 @@ const Index = () => {
   const [allFoods, setAllFoods] = useState<IFoodItem[]>([]);
 
   useEffect(() => {
+    // Initial fetch
     const fetchData = async () => {
       const data = await fetchAllFoods();
       setAllFoods(data);
     };
     fetchData();
+
+    // Listen for new food items via WebSocket
+    socket.on("foodAdded", (newFood: IFoodItem) => {
+      console.log("New food added:", newFood);
+      setAllFoods((prevFoods) => [newFood, ...prevFoods]); // Add new item to the list
+    });
+
+    return () => {
+      socket.off("foodAdded"); // Clean up event listener
+    };
   }, []);
 
   return (
