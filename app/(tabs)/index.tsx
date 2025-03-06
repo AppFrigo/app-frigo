@@ -27,7 +27,7 @@ const fetchAllFoods = async () => {
     const response = await FoodService.getAllFoods();
     console.log("response", response);
 
-    return response ?? [];
+    return response.data ?? [];
   } catch (error) {
     console.error("Error fetching data:", error);
     return [];
