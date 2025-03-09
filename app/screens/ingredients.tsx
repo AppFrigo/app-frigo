@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import IngredientsIcon from "@/assets/icons/ingredients.svg";
+import { FoodCategory } from "@/types/foodTypes";
 
 export default function Ingredients() {
   const [ingredientName, setIngredientName] = useState("");
@@ -32,21 +33,27 @@ export default function Ingredients() {
         onPress={handleDrawerCategoriesPress}
       >
         <Text style={styles.drawerIngredientsCategoriesText}>
-          {isDrawerCategoriesOpen ? "V" : ">"}
+          {isDrawerCategoriesOpen ? "V" : ">"} Classe de l'ingrédient
         </Text>
-        <Text style={styles.drawerIngredientsCategoriesText}>
-          Classe de l'ingrédient
-        </Text>
+        {isDrawerCategoriesOpen && (
+          <View style={styles.drawerIngredientsCategoriesList}>
+            {Object.values(FoodCategory).map((category) => (
+              <Text
+                key={category}
+                style={styles.drawerIngredientsCategoriesListItem}
+              >
+                {category}
+              </Text>
+            ))}
+          </View>
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         onPress={handleDrawerFreshnessPress}
         style={styles.drawerIngredientsCategories}
       >
         <Text style={styles.drawerIngredientsCategoriesText}>
-          {isDrawerFreshnessOpen ? "V" : ">"}
-        </Text>
-        <Text style={styles.drawerIngredientsCategoriesText}>
-          Fraîcheur de l'ingrédient
+          {isDrawerFreshnessOpen ? "V" : ">"} Fraîcheur de l'ingrédient
         </Text>
       </TouchableOpacity>
     </View>
@@ -102,10 +109,11 @@ const styles = StyleSheet.create({
   },
   drawerIngredientsCategories: {
     display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "flex-start",
     width: 304,
-    height: 15,
+    minHeight: 15,
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     margin: "auto",
@@ -117,5 +125,14 @@ const styles = StyleSheet.create({
     fontWeight: "light",
     textAlign: "center",
     alignItems: "center",
+  },
+  drawerIngredientsCategoriesList: { marginTop: 5 },
+  drawerIngredientsCategoriesListItem: {
+    marginBottom: 5,
+    marginLeft: 15,
+    fontSize: 10,
+    fontWeight: "light",
+    textAlign: "left",
+    alignItems: "flex-start",
   },
 });
