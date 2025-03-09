@@ -8,12 +8,14 @@ import {
   StyleSheet,
 } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useNavigation } from "expo-router";
 
 const screenHeight = Dimensions.get("window").height;
 
 export default function AddButton() {
   const [modalVisible, setModalVisible] = useState(false);
   const translateY = useRef(new Animated.Value(screenHeight)).current;
+  const navigation = useNavigation();
 
   const openModal = () => {
     setModalVisible(true);
@@ -30,6 +32,12 @@ export default function AddButton() {
       duration: 300,
       useNativeDriver: true,
     }).start(() => setModalVisible(false));
+  };
+
+  const goToIngredients = () => {
+    // Go to the ingredients screen
+    navigation.navigate("ingredients");
+    closeModal();
   };
 
   return (
@@ -57,7 +65,7 @@ export default function AddButton() {
             <Text style={styles.modalText}>Que veux-tu ajouter ?</Text>
 
             <View style={styles.buttonContainer}>
-              <TouchableOpacity onPress={closeModal} style={styles.button}>
+              <TouchableOpacity onPress={goToIngredients} style={styles.button}>
                 <Text style={styles.buttonText}>Ingrédients</Text>
               </TouchableOpacity>
 
@@ -65,10 +73,6 @@ export default function AddButton() {
                 <Text style={styles.buttonText}>Recettes</Text>
               </TouchableOpacity>
             </View>
-
-            {/* <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-              <Text style={styles.closeButtonText}>Fermer</Text>
-            </TouchableOpacity> */}
           </Animated.View>
         </View>
       )}
@@ -76,18 +80,20 @@ export default function AddButton() {
   );
 }
 
+const screenWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   addButtonContainer: {
     position: "absolute",
-    bottom: 25,
-    left: "50%",
+    bottom: 15,
+    left: screenWidth / 2 - 5,
     transform: [{ translateX: -25 }],
     zIndex: 10,
   },
   addButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 30,
+    width: 66,
+    height: 66,
+    borderRadius: "50%",
     borderWidth: 4,
     borderColor: Colors.light.tint,
     backgroundColor: Colors.light.text,
