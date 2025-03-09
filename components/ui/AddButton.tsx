@@ -36,7 +36,7 @@ export default function AddButton() {
 
   const goToIngredients = () => {
     // Go to the ingredients screen
-    navigation.navigate("ingredients");
+    navigation.navigate("screens/ingredients");
     closeModal();
   };
 
