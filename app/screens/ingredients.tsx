@@ -1,11 +1,6 @@
 import { useState } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import IngredientsIcon from "@/assets/icons/ingredients.svg";
 
 export default function Ingredients() {
   const [ingredientName, setIngredientName] = useState("");
@@ -26,7 +21,9 @@ export default function Ingredients() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Ingrédients</Text>
-      <View style={styles.iconIngredients}></View>
+      <View style={styles.iconIngredients}>
+        <IngredientsIcon />
+      </View>
       <View style={styles.inputIngredients}>
         <Text style={styles.inputIngredientsText}>Nommez votre ingrédient</Text>
       </View>
@@ -82,6 +79,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "#D9D9D9",
     marginBottom: 15,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   inputIngredients: {
     display: "flex",
