@@ -80,19 +80,17 @@ export default function AddButton() {
   );
 }
 
-const screenWidth = Dimensions.get("window").width;
-
 const styles = StyleSheet.create({
   addButtonContainer: {
     position: "absolute",
-    bottom: 15,
-    left: screenWidth / 2 - 5,
+    bottom: 25,
+    left: "50%",
     transform: [{ translateX: -25 }],
     zIndex: 10,
   },
   addButton: {
-    width: 66,
-    height: 66,
+    width: 50,
+    height: 50,
     borderRadius: "50%",
     borderWidth: 4,
     borderColor: Colors.light.tint,
@@ -101,7 +99,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   addButtonTextIcon: {
-    fontSize: 36,
+    fontSize: 30,
     color: Colors.light.tint,
     position: "relative",
     bottom: 3,

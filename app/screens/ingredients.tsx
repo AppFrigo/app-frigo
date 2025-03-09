@@ -19,6 +19,94 @@ export default function Ingredients() {
     setIsDrawerFreshnessOpen(!isDrawerFreshnessOpen);
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: "100%",
+    },
+    title: {
+      fontSize: 18,
+      fontWeight: "bold",
+      textAlign: "center",
+      marginTop: 25,
+      marginBottom: 50,
+    },
+    iconIngredients: {
+      margin: "auto",
+      width: 90,
+      height: 90,
+      borderRadius: 10,
+      backgroundColor: "#D9D9D9",
+      marginBottom: 15,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    inputIngredients: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: 180,
+      height: 15,
+      borderRadius: 10,
+      backgroundColor: "#D9D9D9",
+      margin: "auto",
+      marginBottom: 40,
+    },
+    inputIngredientsText: {
+      fontSize: 8,
+      fontWeight: "light",
+      textAlign: "center",
+      alignItems: "center",
+    },
+    drawerIngredientsCategories: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "flex-start",
+      width: 304,
+      minHeight: 15,
+      borderRadius: 10,
+      backgroundColor: "#D9D9D9",
+      margin: "auto",
+      marginBottom: isDrawerCategoriesOpen ? 0 : 40,
+    },
+    drawerIngredientsCategoriesText: {
+      marginLeft: 5,
+      fontSize: 10,
+      fontWeight: "light",
+      textAlign: "center",
+      alignItems: "center",
+    },
+    drawerIngredientsCategoriesList: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: 304,
+      minHeight: 15,
+      borderRadius: 10,
+      backgroundColor: "#D9D9D9",
+      margin: "auto",
+      marginTop: 10,
+      marginBottom: 20,
+    },
+    drawerIngredientsCategoriesList2: {
+      marginTop: 10,
+      marginBottom: 10,
+    },
+    drawerIngredientsCategoriesListItem: {
+      marginBottom: 5,
+      marginTop: 5,
+      marginLeft: 20,
+      fontSize: 10,
+      fontWeight: "light",
+      textAlign: "left",
+      alignItems: "flex-start",
+    },
+  });
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Ingrédients</Text>
@@ -35,19 +123,29 @@ export default function Ingredients() {
         <Text style={styles.drawerIngredientsCategoriesText}>
           {isDrawerCategoriesOpen ? "V" : ">"} Classe de l'ingrédient
         </Text>
-        {isDrawerCategoriesOpen && (
-          <View style={styles.drawerIngredientsCategoriesList}>
+      </TouchableOpacity>
+
+      {/* Drawer for categories */}
+      {isDrawerCategoriesOpen && (
+        <View style={styles.drawerIngredientsCategoriesList}>
+          <View style={styles.drawerIngredientsCategoriesList2}>
             {Object.values(FoodCategory).map((category) => (
-              <Text
+              <TouchableOpacity
+                onPress={() => console.log(category)}
                 key={category}
-                style={styles.drawerIngredientsCategoriesListItem}
               >
-                {category}
-              </Text>
+                <Text
+                  key={category}
+                  style={styles.drawerIngredientsCategoriesListItem}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
             ))}
           </View>
-        )}
-      </TouchableOpacity>
+        </View>
+      )}
+
       <TouchableOpacity
         onPress={handleDrawerFreshnessPress}
         style={styles.drawerIngredientsCategories}
@@ -59,80 +157,3 @@ export default function Ingredients() {
     </View>
   );
 }
-
-export const options = {
-  title: "Ingredients",
-  headerBackTitle: "Retour",
-};
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    width: "100%",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 25,
-    marginBottom: 50,
-  },
-  iconIngredients: {
-    margin: "auto",
-    width: 90,
-    height: 90,
-    borderRadius: 10,
-    backgroundColor: "#D9D9D9",
-    marginBottom: 15,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputIngredients: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    width: 180,
-    height: 15,
-    borderRadius: 10,
-    backgroundColor: "#D9D9D9",
-    margin: "auto",
-    marginBottom: 40,
-  },
-  inputIngredientsText: {
-    fontSize: 8,
-    fontWeight: "light",
-    textAlign: "center",
-    alignItems: "center",
-  },
-  drawerIngredientsCategories: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    width: 304,
-    minHeight: 15,
-    borderRadius: 10,
-    backgroundColor: "#D9D9D9",
-    margin: "auto",
-    marginBottom: 40,
-  },
-  drawerIngredientsCategoriesText: {
-    marginLeft: 5,
-    fontSize: 10,
-    fontWeight: "light",
-    textAlign: "center",
-    alignItems: "center",
-  },
-  drawerIngredientsCategoriesList: { marginTop: 5 },
-  drawerIngredientsCategoriesListItem: {
-    marginBottom: 5,
-    marginLeft: 15,
-    fontSize: 10,
-    fontWeight: "light",
-    textAlign: "left",
-    alignItems: "flex-start",
-  },
-});
