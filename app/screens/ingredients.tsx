@@ -12,11 +12,17 @@ export default function Ingredients() {
   const [isDrawerFreshnessOpen, setIsDrawerFreshnessOpen] = useState(false);
 
   const handleDrawerCategoriesPress = () => {
+    setIngredientCategory("");
     setIsDrawerCategoriesOpen(!isDrawerCategoriesOpen);
   };
 
   const handleDrawerFreshnessPress = () => {
     setIsDrawerFreshnessOpen(!isDrawerFreshnessOpen);
+  };
+
+  const handleChooseCategory = (category: FoodCategory) => {
+    setIngredientCategory(category);
+    setIsDrawerCategoriesOpen(false);
   };
 
   const styles = StyleSheet.create({
@@ -72,6 +78,8 @@ export default function Ingredients() {
       backgroundColor: "#D9D9D9",
       margin: "auto",
       marginBottom: isDrawerCategoriesOpen ? 0 : 40,
+      borderWidth: ingredientCategory ? 1 : 0,
+      borderColor: ingredientCategory ? "green" : "",
     },
     drawerIngredientsCategoriesText: {
       marginLeft: 5,
@@ -105,6 +113,25 @@ export default function Ingredients() {
       textAlign: "left",
       alignItems: "flex-start",
     },
+    drawerIngredientsFreshness: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "flex-start",
+      width: 304,
+      minHeight: 15,
+      borderRadius: 10,
+      backgroundColor: "#D9D9D9",
+      margin: "auto",
+      marginBottom: isDrawerFreshnessOpen ? 0 : 40,
+    },
+    drawerIngredientsFreshnessText: {
+      marginLeft: 5,
+      fontSize: 10,
+      fontWeight: "light",
+      textAlign: "center",
+      alignItems: "center",
+    },
   });
 
   return (
@@ -121,7 +148,8 @@ export default function Ingredients() {
         onPress={handleDrawerCategoriesPress}
       >
         <Text style={styles.drawerIngredientsCategoriesText}>
-          {isDrawerCategoriesOpen ? "V" : ">"} Classe de l'ingrédient
+          {isDrawerCategoriesOpen ? "V" : ">"}{" "}
+          {ingredientCategory ? ingredientCategory : "Classe de l'ingrédient"}
         </Text>
       </TouchableOpacity>
 
@@ -131,7 +159,7 @@ export default function Ingredients() {
           <View style={styles.drawerIngredientsCategoriesList2}>
             {Object.values(FoodCategory).map((category) => (
               <TouchableOpacity
-                onPress={() => console.log(category)}
+                onPress={handleChooseCategory.bind(null, category)}
                 key={category}
               >
                 <Text
@@ -148,9 +176,9 @@ export default function Ingredients() {
 
       <TouchableOpacity
         onPress={handleDrawerFreshnessPress}
-        style={styles.drawerIngredientsCategories}
+        style={styles.drawerIngredientsFreshness}
       >
-        <Text style={styles.drawerIngredientsCategoriesText}>
+        <Text style={styles.drawerIngredientsFreshnessText}>
           {isDrawerFreshnessOpen ? "V" : ">"} Fraîcheur de l'ingrédient
         </Text>
       </TouchableOpacity>
