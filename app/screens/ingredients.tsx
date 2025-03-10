@@ -40,16 +40,22 @@ export default function Ingredients() {
 
   const handleDrawerCategoriesPress = () => {
     setIngredientCategory("");
+    setIsDrawerFreshnessOpen(false);
+    setIsDrawerQuantityOpen(false);
     setIsDrawerCategoriesOpen(!isDrawerCategoriesOpen);
   };
 
   const handleDrawerFreshnessPress = () => {
     setIngredientFreshness({ label: "", value: false });
+    setIsDrawerQuantityOpen(false);
+    setIsDrawerCategoriesOpen(false);
     setIsDrawerFreshnessOpen(!isDrawerFreshnessOpen);
   };
 
   const handleDrawerUnitPress = () => {
     setIngredientUnit({ label: "", value: "" });
+    setIsDrawerFreshnessOpen(false);
+    setIsDrawerCategoriesOpen(false);
     setIsDrawerQuantityOpen(!isDrawerQuantityOpen);
   };
 
@@ -169,6 +175,7 @@ export default function Ingredients() {
         style={[
           styles.drawerIngredientsFreshness,
           ingredientFreshness.label && { borderWidth: 1, borderColor: "green" },
+          isDrawerFreshnessOpen && { marginBottom: 0 },
         ]}
       >
         <Text style={styles.drawerIngredientsFreshnessText}>
@@ -208,7 +215,13 @@ export default function Ingredients() {
         ]}
       >
         <TextInput
-          style={styles.ingredientsQuantityInput}
+          style={[
+            styles.ingredientsQuantityInput,
+            ingredientQuantityValue !== "Quantité de l'ingrédient" && {
+              borderWidth: 1,
+              borderColor: "green",
+            },
+          ]}
           keyboardType="numeric"
           value={ingredientQuantityValue}
           onChangeText={handleQuantity}
@@ -216,7 +229,12 @@ export default function Ingredients() {
           onBlur={onBlurQuantity}
         />
         <TouchableOpacity onPress={handleDrawerUnitPress}>
-          <Text style={styles.ingredientsQuantityText}>
+          <Text
+            style={[
+              styles.ingredientsQuantityText,
+              ingredientUnit.label && { borderWidth: 1, borderColor: "green" },
+            ]}
+          >
             {isDrawerQuantityOpen ? "V" : ">"}{" "}
             {ingredientUnit.label ? ingredientUnit.label : "Unité"}
           </Text>
@@ -375,7 +393,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingStart: 5,
     paddingEnd: 10,
-    paddingTop: 1,
   },
   ingredientsQuantityInput: {
     fontSize: 10,
