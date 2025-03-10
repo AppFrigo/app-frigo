@@ -1,5 +1,6 @@
 import FoodService from "@/services/foodService";
 import { IFoodItem } from "@/types/foodTypes";
+import logger from "./logger";
 
 const groupDataInPairs = (
   data: IFoodItem[]
@@ -18,8 +19,8 @@ const groupDataInPairs = (
 const fetchAllFoods = async () => {
   try {
     const response = await FoodService.getAllFoods();
-    console.log("response", response);
 
+    logger(`Fetched ${response.data.length} food items`);
     return response.data ?? [];
   } catch (error) {
     console.error("Error fetching data:", error);
