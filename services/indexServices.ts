@@ -1,5 +1,5 @@
 import FoodService from "@/services/foodService";
-import { IFoodItem } from "@/types/foodTypes";
+import { IFoodItem, FoodItem } from "@/types/foodTypes";
 import logger from "./logger";
 
 const groupDataInPairs = (
@@ -19,6 +19,21 @@ const groupDataInPairs = (
 const fetchAllFoods = async () => {
   try {
     const response = await FoodService.getAllFoods();
+    const newFoods = response.data.map(
+      (food: IFoodItem) =>
+        new FoodItem(
+          food.id,
+          food.name,
+          food.category,
+          food.isDry,
+          food.quantity,
+          food.unit,
+          food.expirationDate,
+          food.notes
+        )
+    );
+
+    logger("FoodItems fetched:", newFoods);
 
     logger(`Fetched ${response.data.length} food items`);
     return response.data ?? [];
