@@ -6,6 +6,8 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import { Animated, Easing } from "react-native";
+
 import DeleteIcon from "@/assets/icons/delete.svg";
 import DefaultFoodIcon from "@/assets/icons/defaultFood.svg";
 
@@ -25,6 +27,7 @@ const socket = io("http://localhost:3000");
 const Index = () => {
   const [allFoods, setAllFoods] = useState<IFoodItem[]>([]);
   const [inDeleteMode, setInDeleteMode] = useState(false);
+  const [shakeAnimation] = useState(new Animated.Value(0));
 
   useEffect(() => {
     // Initial fetch
@@ -73,6 +76,29 @@ const Index = () => {
     deleteFoodItem(id);
   };
 
+  useEffect(() => {
+    if (inDeleteMode) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(shakeAnimation, {
+            toValue: 0.5,
+            duration: 50,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+          Animated.timing(shakeAnimation, {
+            toValue: -0.5,
+            duration: 50,
+            easing: Easing.linear,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    } else {
+      shakeAnimation.setValue(0);
+    }
+  }, [inDeleteMode]);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -87,7 +113,16 @@ const Index = () => {
                     style={styles.deleteIcon}
                     onPress={() => handleDeleteItem(item[0].id)}
                   >
-                    <DeleteIcon />
+                    <Animated.View
+                      style={[
+                        styles.itemContainer,
+                        {
+                          transform: [{ translateX: shakeAnimation }],
+                        },
+                      ]}
+                    >
+                      <DeleteIcon />
+                    </Animated.View>
                   </TouchableOpacity>
                 )}
                 <TouchableOpacity
@@ -124,7 +159,16 @@ const Index = () => {
                     style={styles.deleteIcon}
                     onPress={() => item[1] && handleDeleteItem(item[1].id)}
                   >
-                    <DeleteIcon />
+                    <Animated.View
+                      style={[
+                        styles.itemContainer,
+                        {
+                          transform: [{ translateX: shakeAnimation }],
+                        },
+                      ]}
+                    >
+                      <DeleteIcon />
+                    </Animated.View>
                   </TouchableOpacity>
                 )}
                 <TouchableOpacity
