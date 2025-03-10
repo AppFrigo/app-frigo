@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import DeleteIcon from "@/assets/icons/delete.svg";
+import DefaultFoodIcon from "@/assets/icons/defaultFood.svg";
 
 import { io } from "socket.io-client";
 
@@ -94,9 +95,11 @@ const Index = () => {
                   activeOpacity={1}
                   style={styles.itemContainer}
                 >
-                  <View style={styles.fruitRow}>
-                    <Text style={styles.fruitIcon}>{item[0].name[0]}</Text>
+                  {/* <View style={styles.fruitRow}> */}
+                  <View style={styles.fruitIcon}>
+                    <DefaultFoodIcon />
                   </View>
+                  {/* </View> */}
                   <View
                     style={
                       item[1]
@@ -129,8 +132,8 @@ const Index = () => {
                   activeOpacity={1}
                   style={styles.itemContainer}
                 >
-                  <View style={styles.fruitRow}>
-                    <Text style={styles.fruitIcon}>{item[1].name[0]}</Text>
+                  <View style={styles.fruitIcon}>
+                    <DefaultFoodIcon />
                   </View>
                   <View style={styles.labelContainerRight}>
                     <Text style={styles.label}>
@@ -173,8 +176,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   fruitIcon: {
-    fontSize: 40,
-    color: "#3f6131",
+    height: 100,
+    width: 100,
   },
   labelContainer: {
     backgroundColor: "#a47d52",
