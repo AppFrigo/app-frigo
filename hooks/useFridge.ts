@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Fridge } from "../services/fridgeService";
-import { FoodItem, FoodCategory } from "../types/foodTypes";
+import { Fridge } from "@/services/fridgeService";
+import { FoodItem, FoodCategory } from "@/types/foodTypes";
+import { addFoodService } from "@/services/ingredientsServices";
 
 export const useFridge = () => {
   const [fridge] = useState(new Fridge());
@@ -23,6 +24,7 @@ export const useFridge = () => {
       expirationDate
     );
     fridge.addItem(newItem);
+    addFoodService(newItem);
   };
 
   return {

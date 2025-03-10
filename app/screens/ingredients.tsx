@@ -5,6 +5,7 @@ import { FoodCategory } from "@/types/foodTypes";
 import { TextInput } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { useNavigation } from "expo-router";
+import { useFridge } from "@/hooks/useFridge";
 
 const freshnessMap = [
   { label: "Produit frais", value: false },
@@ -21,6 +22,7 @@ const unitMap = [
 
 export default function Ingredients() {
   const navigation = useNavigation();
+  const { addFood } = useFridge();
 
   const [ingredientName, setIngredientName] = useState(
     "Nommez votre ingrédient"
@@ -122,13 +124,24 @@ export default function Ingredients() {
       ingredientQuantityValue !== "Quantité de l'ingrédient" &&
       ingredientUnit.label
     ) {
-      // setNewIngredient({
-      //   name: ingredientName,
-      //   category: ingredientCategory,
-      //   freshness: ingredientFreshness.value,
-      //   quantity: parseInt(ingredientQuantityValue),
-      //   unit: ingredientUnit.value,
-      // });
+      addFood(
+        ingredientName,
+        ingredientCategory,
+        ingredientFreshness.value,
+        parseInt(ingredientQuantityValue),
+        ingredientUnit.value
+      );
+      Toast.show({
+        type: "success",
+        text1: "Succès",
+        text2: "Ingrédient ajouté",
+        position: "top",
+      });
+      setIngredientName("Nommez votre ingrédient");
+      setIngredientCategory(FoodCategory.None);
+      setIngredientFreshness({ label: "", value: false });
+      setIngredientQuantityValue("Quantité de l'ingrédient");
+      setIngredientUnit({ label: "", value: "" });
     } else {
       console.log("Please fill all the fields");
       Toast.show({
@@ -139,18 +152,6 @@ export default function Ingredients() {
       });
     }
   };
-
-  // useEffect(() => {
-  //   if (
-  //     newIngredient.name &&
-  //     newIngredient.category &&
-  //     newIngredient.unit &&
-  //     newIngredient.quantity
-  //   ) {
-  //   console.log(newIngredient);
-  //   navigation.navigate("(tabs)");
-  //   }
-  // }, [newIngredient]);
 
   return (
     <View style={styles.container}>
