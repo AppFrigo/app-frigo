@@ -114,8 +114,6 @@ export default function Ingredients() {
     }
   };
 
-  // new food
-
   const handleSubmit = () => {
     if (
       ingredientName !== "Nommez votre ingrédient" &&
