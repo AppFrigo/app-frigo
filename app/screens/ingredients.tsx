@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import IngredientsIcon from "@/assets/icons/ingredients.svg";
 import { FoodCategory } from "@/types/foodTypes";
 import { TextInput } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
+import { useNavigation } from "expo-router";
 
 const freshnessMap = [
   { label: "Produit frais", value: false },
@@ -18,6 +20,8 @@ const unitMap = [
 ];
 
 export default function Ingredients() {
+  const navigation = useNavigation();
+
   const [ingredientName, setIngredientName] = useState(
     "Nommez votre ingrédient"
   );
@@ -105,6 +109,52 @@ export default function Ingredients() {
       setIngredientQuantityValue("Quantité de l'ingrédient");
     }
   };
+
+  const [newIngredient, setNewIngredient] = useState({
+    name: "",
+    category: "",
+    freshness: false,
+    quantity: 0,
+    unit: "",
+  });
+
+  const handleSubmit = () => {
+    if (
+      ingredientName !== "Nommez votre ingrédient" &&
+      ingredientCategory &&
+      ingredientFreshness.label &&
+      ingredientQuantityValue !== "Quantité de l'ingrédient" &&
+      ingredientUnit.label
+    ) {
+      setNewIngredient({
+        name: ingredientName,
+        category: ingredientCategory,
+        freshness: ingredientFreshness.value,
+        quantity: parseInt(ingredientQuantityValue),
+        unit: ingredientUnit.value,
+      });
+    } else {
+      console.log("Please fill all the fields");
+      Toast.show({
+        type: "error",
+        text1: "Erreur",
+        text2: "Veuillez remplir tous les champs",
+        position: "top",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (
+      newIngredient.name &&
+      newIngredient.category &&
+      newIngredient.unit &&
+      newIngredient.quantity
+    ) {
+      console.log(newIngredient);
+      navigation.navigate("(tabs)");
+    }
+  }, [newIngredient]);
 
   return (
     <View style={styles.container}>
@@ -263,6 +313,13 @@ export default function Ingredients() {
           </View>
         </View>
       )}
+
+      {/* Submit button */}
+      <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
+        <Text style={styles.submitButtonText}>Ajouter</Text>
+      </TouchableOpacity>
+
+      <Toast />
     </View>
   );
 }
@@ -270,8 +327,8 @@ export default function Ingredients() {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
+    alignItems: "center",
     width: "100%",
   },
   title: {
@@ -440,5 +497,23 @@ const styles = StyleSheet.create({
     fontWeight: "light",
     textAlign: "right",
     alignItems: "flex-start",
+  },
+  submitButton: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 152,
+    margin: "auto",
+    minHeight: 30,
+    borderRadius: 10,
+    backgroundColor: "#3f6131",
+  },
+  submitButtonText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center",
+    alignItems: "center",
+    color: "#D9D9D9",
   },
 });
