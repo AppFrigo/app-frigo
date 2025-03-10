@@ -1,5 +1,4 @@
-export default function logger(message: string) {
+export default function logger(...args: any[]) {
   const timestamp = new Date().toLocaleTimeString();
-
-  console.log(`[${timestamp}] ${message}`);
+  console.log(`[${timestamp}]`, ...args);
 }

@@ -17,6 +17,7 @@ import {
   deleteFoodItem,
   groupDataInPairs,
 } from "@/services/indexServices";
+import logger from "@/services/logger";
 
 const socket = io("http://localhost:3000");
 
@@ -34,13 +35,13 @@ const Index = () => {
 
     // Listen for new food items via WebSocket
     socket.on("foodAdded", (newFood: IFoodItem) => {
-      console.log("New food added:", newFood.name);
+      logger("New food added:", newFood.name);
       setAllFoods((prevFoods) => [newFood, ...prevFoods]); // Add new item to the list
     });
 
     // Listen for deleted food items via WebSocket
     socket.on("foodDeleted", (deletedFoodId: string) => {
-      console.log("Food deleted with id:", deletedFoodId);
+      logger("Food deleted with id:", deletedFoodId);
       setAllFoods((prevFoods) =>
         prevFoods.filter((food) => food.id !== deletedFoodId)
       ); // Remove item from the list
@@ -118,7 +119,7 @@ const Index = () => {
                 {inDeleteMode && (
                   <TouchableOpacity
                     style={styles.deleteIcon}
-                    onPress={() => handleDeleteItem(item[1].id)}
+                    onPress={() => item[1] && handleDeleteItem(item[1].id)}
                   >
                     <DeleteIcon />
                   </TouchableOpacity>
