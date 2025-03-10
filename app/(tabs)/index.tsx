@@ -12,7 +12,11 @@ import { io } from "socket.io-client";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IFoodItem } from "@/types/foodTypes";
-import { fetchAllFoods, groupDataInPairs } from "@/services/indexServices";
+import {
+  fetchAllFoods,
+  deleteFoodItem,
+  groupDataInPairs,
+} from "@/services/indexServices";
 
 const socket = io("http://localhost:3000");
 
@@ -34,20 +38,37 @@ const Index = () => {
       setAllFoods((prevFoods) => [newFood, ...prevFoods]); // Add new item to the list
     });
 
+    // Listen for deleted food items via WebSocket
+    socket.on("foodDeleted", (deletedFoodId: string) => {
+      console.log("Food deleted with id:", deletedFoodId);
+      setAllFoods((prevFoods) =>
+        prevFoods.filter((food) => food.id !== deletedFoodId)
+      ); // Remove item from the list
+    });
+
     return () => {
       socket.off("foodAdded"); // Clean up event listener
+      socket.off("foodDeleted"); // Clean up event listener
     };
   }, []);
 
+  // If in delete mode but no items are selected, exit delete mode
+  useEffect(() => {
+    if (inDeleteMode && allFoods.length === 0) {
+      console.log("Exiting delete mode");
+      setInDeleteMode(false);
+    }
+  }, [allFoods, inDeleteMode]);
+
   const handleDeleteMode = () => {
-    console.log("Delete mode activated");
+    console.log("Delete mode toggled");
 
     setInDeleteMode(!inDeleteMode);
   };
 
   const handleDeleteItem = (id: string | null) => {
     if (!id) return;
-    console.log("Deleting item with id:", id);
+    deleteFoodItem(id);
   };
 
   return (

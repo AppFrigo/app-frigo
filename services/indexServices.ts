@@ -28,4 +28,16 @@ const fetchAllFoods = async () => {
   }
 };
 
-export { groupDataInPairs, fetchAllFoods };
+const deleteFoodItem = async (id: string) => {
+  try {
+    const response = await FoodService.deleteFood(id);
+
+    logger(`Deleted food item with id: ${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting food item:", error);
+    return null;
+  }
+};
+
+export { groupDataInPairs, fetchAllFoods, deleteFoodItem };
