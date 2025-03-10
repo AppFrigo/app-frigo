@@ -8,8 +8,9 @@ import {
 } from "react-native";
 import { Animated, Easing } from "react-native";
 
+import CategoryIcon from "@/components/ui/CategoryIcon";
 import DeleteIcon from "@/assets/icons/delete.svg";
-import DefaultFoodIcon from "@/assets/icons/defaultFood.svg";
+import CloseIcon from "@/assets/icons/close.svg";
 
 import { io } from "socket.io-client";
 
@@ -101,6 +102,12 @@ const Index = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {inDeleteMode && (
+        <View style={styles.exitDeleteMode}>
+          <CloseIcon fill={"black"} onPress={handleDeleteMode} />
+        </View>
+      )}
+
       <FlatList
         data={groupDataInPairs(allFoods)}
         renderItem={({ item }) => (
@@ -132,7 +139,7 @@ const Index = () => {
                 >
                   {/* <View style={styles.fruitRow}> */}
                   <View style={styles.fruitIcon}>
-                    <DefaultFoodIcon />
+                    <CategoryIcon category={item[0].category} />
                   </View>
                   {/* </View> */}
                   <View
@@ -177,7 +184,7 @@ const Index = () => {
                   style={styles.itemContainer}
                 >
                   <View style={styles.fruitIcon}>
-                    <DefaultFoodIcon />
+                    <CategoryIcon category={item[1].category} />
                   </View>
                   <View style={styles.labelContainerRight}>
                     <Text style={styles.label}>
@@ -221,7 +228,11 @@ const styles = StyleSheet.create({
   },
   fruitIcon: {
     height: 100,
+    maxHeight: 100,
     width: 100,
+    maxWidth: 100,
+    justifyContent: "center",
+    alignItems: "center",
   },
   labelContainer: {
     backgroundColor: "#a47d52",
@@ -262,6 +273,12 @@ const styles = StyleSheet.create({
     zIndex: 100,
     height: 20,
     width: 20,
+  },
+  exitDeleteMode: {
+    position: "absolute",
+    top: 20,
+    left: 15,
+    zIndex: 100,
   },
 });
 
