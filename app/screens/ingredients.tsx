@@ -25,7 +25,9 @@ export default function Ingredients() {
   const [ingredientName, setIngredientName] = useState(
     "Nommez votre ingrédient"
   );
-  const [ingredientCategory, setIngredientCategory] = useState("");
+  const [ingredientCategory, setIngredientCategory] = useState<FoodCategory>(
+    FoodCategory.None
+  );
   const [ingredientFreshness, setIngredientFreshness] = useState({
     label: "",
     value: false,
@@ -43,7 +45,7 @@ export default function Ingredients() {
   const [isDrawerQuantityOpen, setIsDrawerQuantityOpen] = useState(false);
 
   const handleDrawerCategoriesPress = () => {
-    setIngredientCategory("");
+    setIngredientCategory(FoodCategory.None);
     setIsDrawerFreshnessOpen(false);
     setIsDrawerQuantityOpen(false);
     setIsDrawerCategoriesOpen(!isDrawerCategoriesOpen);
@@ -110,29 +112,23 @@ export default function Ingredients() {
     }
   };
 
-  const [newIngredient, setNewIngredient] = useState({
-    name: "",
-    category: "",
-    freshness: false,
-    quantity: 0,
-    unit: "",
-  });
+  // new food
 
   const handleSubmit = () => {
     if (
       ingredientName !== "Nommez votre ingrédient" &&
-      ingredientCategory &&
+      ingredientCategory !== FoodCategory.None &&
       ingredientFreshness.label &&
       ingredientQuantityValue !== "Quantité de l'ingrédient" &&
       ingredientUnit.label
     ) {
-      setNewIngredient({
-        name: ingredientName,
-        category: ingredientCategory,
-        freshness: ingredientFreshness.value,
-        quantity: parseInt(ingredientQuantityValue),
-        unit: ingredientUnit.value,
-      });
+      // setNewIngredient({
+      //   name: ingredientName,
+      //   category: ingredientCategory,
+      //   freshness: ingredientFreshness.value,
+      //   quantity: parseInt(ingredientQuantityValue),
+      //   unit: ingredientUnit.value,
+      // });
     } else {
       console.log("Please fill all the fields");
       Toast.show({
@@ -144,17 +140,17 @@ export default function Ingredients() {
     }
   };
 
-  useEffect(() => {
-    if (
-      newIngredient.name &&
-      newIngredient.category &&
-      newIngredient.unit &&
-      newIngredient.quantity
-    ) {
-      console.log(newIngredient);
-      navigation.navigate("(tabs)");
-    }
-  }, [newIngredient]);
+  // useEffect(() => {
+  //   if (
+  //     newIngredient.name &&
+  //     newIngredient.category &&
+  //     newIngredient.unit &&
+  //     newIngredient.quantity
+  //   ) {
+  //   console.log(newIngredient);
+  //   navigation.navigate("(tabs)");
+  //   }
+  // }, [newIngredient]);
 
   return (
     <View style={styles.container}>
@@ -187,7 +183,10 @@ export default function Ingredients() {
       <TouchableOpacity
         style={[
           styles.drawerIngredientsCategories,
-          ingredientCategory && { borderWidth: 1, borderColor: "green" },
+          ingredientCategory !== FoodCategory.None && {
+            borderWidth: 1,
+            borderColor: "green",
+          },
           isDrawerCategoriesOpen && { marginBottom: 0 },
         ]}
         onPress={handleDrawerCategoriesPress}
@@ -202,19 +201,22 @@ export default function Ingredients() {
       {isDrawerCategoriesOpen && (
         <View style={styles.drawerIngredientsCategoriesList}>
           <View style={styles.drawerIngredientsCategoriesList2}>
-            {Object.values(FoodCategory).map((category) => (
-              <TouchableOpacity
-                onPress={handleChooseCategory.bind(null, category)}
-                key={category}
-              >
-                <Text
-                  key={category}
-                  style={styles.drawerIngredientsCategoriesListItem}
-                >
-                  {category}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {Object.values(FoodCategory).map(
+              (category) =>
+                category !== FoodCategory.None && (
+                  <TouchableOpacity
+                    onPress={handleChooseCategory.bind(null, category)}
+                    key={category}
+                  >
+                    <Text
+                      key={category}
+                      style={styles.drawerIngredientsCategoriesListItem}
+                    >
+                      {category}
+                    </Text>
+                  </TouchableOpacity>
+                )
+            )}
           </View>
         </View>
       )}

@@ -8,6 +8,7 @@ export enum FoodCategory {
   Cereals = "Cereals",
   SugaryProducts = "SugaryProducts",
   Spices = "Spices",
+  None = "",
 }
 
 // Interface for the properties of the food
