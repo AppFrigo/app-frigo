@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import IngredientsIcon from "@/assets/icons/ingredients.svg";
 import { FoodCategory } from "@/types/foodTypes";
 import { TextInput } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
-import { useNavigation } from "expo-router";
 import { useFridge } from "@/hooks/useFridge";
 
 const freshnessMap = [
@@ -21,7 +20,6 @@ const unitMap = [
 ];
 
 export default function Ingredients() {
-  const navigation = useNavigation();
   const { addFood } = useFridge();
 
   const [ingredientName, setIngredientName] = useState(

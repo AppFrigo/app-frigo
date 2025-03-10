@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import DeleteIcon from "@/assets/icons/delete.svg";
+
 import { io } from "socket.io-client";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,6 +18,7 @@ const socket = io("http://localhost:3000");
 
 const Index = () => {
   const [allFoods, setAllFoods] = useState<IFoodItem[]>([]);
+  const [inDeleteMode, setInDeleteMode] = useState(false);
 
   useEffect(() => {
     // Initial fetch
@@ -30,6 +39,17 @@ const Index = () => {
     };
   }, []);
 
+  const handleDeleteMode = () => {
+    console.log("Delete mode activated");
+
+    setInDeleteMode(!inDeleteMode);
+  };
+
+  const handleDeleteItem = (id: string | null) => {
+    if (!id) return;
+    console.log("Deleting item with id:", id);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -38,34 +58,66 @@ const Index = () => {
           <View style={styles.rowContainer}>
             {/* First Element */}
             {item[0] && (
-              <View style={styles.itemContainer}>
-                <View style={styles.fruitRow}>
-                  <Text style={styles.fruitIcon}>{item[0].name[0]}</Text>
-                </View>
-                <View
-                  style={
-                    item[1] ? styles.labelContainerLeft : styles.labelContainer
-                  }
+              <View>
+                {inDeleteMode && (
+                  <TouchableOpacity
+                    style={styles.deleteIcon}
+                    onPress={() => handleDeleteItem(item[0].id)}
+                  >
+                    <DeleteIcon />
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity
+                  onLongPress={handleDeleteMode}
+                  activeOpacity={1}
+                  style={styles.itemContainer}
                 >
-                  <Text style={styles.label}>
-                    {item[0].quantity}
-                    {item[0].unit === "pcs" ? "" : item[0].unit} {item[0].name}
-                  </Text>
-                </View>
+                  <View style={styles.fruitRow}>
+                    <Text style={styles.fruitIcon}>{item[0].name[0]}</Text>
+                  </View>
+                  <View
+                    style={
+                      item[1]
+                        ? styles.labelContainerLeft
+                        : styles.labelContainer
+                    }
+                  >
+                    <Text style={styles.label}>
+                      {item[0].quantity}
+                      {item[0].unit === "pcs" ? "" : item[0].unit}{" "}
+                      {item[0].name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             )}
             {/* Second Element (can be null) */}
             {item[1] && (
-              <View style={styles.itemContainer}>
-                <View style={styles.fruitRow}>
-                  <Text style={styles.fruitIcon}>{item[1].name[0]}</Text>
-                </View>
-                <View style={styles.labelContainerRight}>
-                  <Text style={styles.label}>
-                    {item[1].quantity}
-                    {item[1].unit === "pcs" ? "" : item[1].unit} {item[1].name}
-                  </Text>
-                </View>
+              <View>
+                {inDeleteMode && (
+                  <TouchableOpacity
+                    style={styles.deleteIcon}
+                    onPress={() => handleDeleteItem(item[1].id)}
+                  >
+                    <DeleteIcon />
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity
+                  onLongPress={handleDeleteMode}
+                  activeOpacity={1}
+                  style={styles.itemContainer}
+                >
+                  <View style={styles.fruitRow}>
+                    <Text style={styles.fruitIcon}>{item[1].name[0]}</Text>
+                  </View>
+                  <View style={styles.labelContainerRight}>
+                    <Text style={styles.label}>
+                      {item[1].quantity}
+                      {item[1].unit === "pcs" ? "" : item[1].unit}{" "}
+                      {item[1].name}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             )}
           </View>
@@ -133,6 +185,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
     textAlign: "center",
+  },
+  deleteIcon: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+    zIndex: 100,
+    height: 20,
+    width: 20,
   },
 });
 
